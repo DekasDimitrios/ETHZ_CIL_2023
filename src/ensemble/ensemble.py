@@ -3,7 +3,7 @@ import pandas as pd
 from collections import Counter
 
 
-def soft_voting():
+def soft_voting(file_paths):
     # Initialize empty lists to store positive and negative logits
     positive_logits = []
     negative_logits = []
