@@ -1,0 +1,70 @@
+SYSTEM:
+  SEED_VALUE: 42
+  USE_EXTRA_DATASET: False
+
+IO:
+  NEG_TWEET_FILE_PATH: '../../data/train_neg_full.txt'
+  POS_TWEET_FILE_PATH: '../../data/train_pos_full.txt'
+  TEST_TWEET_FILE_PATH: '../../data/test_data.txt'
+  PP_NEG_TWEET_FILE_PATH: '../../data/preprocessed/train_neg_full.txt'
+  PP_POS_TWEET_FILE_PATH: '../../data/preprocessed/train_neg_full.txt'
+  PP_TEST_TWEET_FILE_PATH: '../../data/preprocessed/train_neg_full.txt'
+  EXTRA_DATA_FILE_PATH: '../../data/additional/training.1600000.processed.noemoticon.csv'
+
+PP:
+  DROP_DUPLICATES: True
+  AMBIGUOUS_DROP_FACTOR: 0.80    # Only relevant if DROP_DUPLICATES = True
+  DROP_NEAR_DUPLICATES: False
+  USE_EKPHRASIS: True
+  USE_WORD_LVL: True
+
+EKPHRASIS:
+  # ['email', 'percent', 'money', 'phone', 'user', 'time', 'url', 'date', 'hashtag'] are the valid options here
+  OMIT: []
+  # ['email', 'percent', 'money', 'phone', 'user', 'time', 'url', 'date', 'hashtag'] are the valid options here
+  NORMALIZE: ['email', 'percent', 'money', 'phone', 'user', 'time', 'url', 'date']
+  UNPACK_CONTRACTIONS: True
+  UNPACK_HASHTAGS: True
+  # ['hashtag', 'allcaps', 'elongated', 'repeated'] are the valid options here
+  ANNOTATE: ['elongated']
+  SEGMENTOR: "twitter"    # "english" or "twitter" is the valid options here
+  CORRECTOR: "twitter"    # "english" or "twitter" is the valid options here
+  ALL_CAPS_TAG: "single"    # "single" or "wrap" or "every" is the valid options here
+                            #  Note: applicable only when `allcaps` is included in annotate[]
+                            #          - single: add a tag after the last capitalized word
+                            #          - wrap: wrap all words with opening and closing tags
+                            #          - every: add a tag after each word
+  SPELL_CORRECT_ELONGATED: True
+  SPELL_CORRECTION: True
+  FIX_TEXT: False
+  FIX_HTML: False
+  REMOVE_TAGS: False
+  # ['emoticons', 'slang_dict'] are the valid options here
+  DICTIONARIES: ['emoticons']
+  TOKENIZER: 'Whitespace'
+
+WORD_LVL:
+  LOWER_CASE: False #
+  REMOVE_USER: False #
+  CHANGE_USER: True #
+  USER_REPRESENTATION: '@USER' #
+  REMOVE_URL: False #
+  CHANGE_URL: True #
+  URL_REPRESENTATION: 'HTTPURL' #
+  REMOVE_ELONGATED: True       # True
+  REMOVE_STOPWORDS: False
+  REMOVE_PUNCTUATIONS: False
+  REMOVE_RETWEETS: False #      # True
+  NORMALIZE_LAUGHTER: False #      # True
+  REMOVE_SINGLE_CHARACTERS: False
+  REMOVE_ANGLE_BRACKETS: True       # True
+  LEMMATIZE: False
+  SPELL_CORRECTION: False
+  NORMALIZE_REPEATING_CHARACTERS: False       # True
+  REMOVE_NUMERIC: False
+  SEGMENT_HASHTAGS: False
+  RECONSTRUCT_SMILEYS: False
+  REMOVE_EXTRA_SPACES: False
+  REMOVE_TRAILING_URL: True #
+  MANUAL_SPELL_CORRECTION: False
+  CLARIFY_EMPTY: True #       # True
