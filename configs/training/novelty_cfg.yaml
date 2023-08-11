@@ -1,0 +1,40 @@
+SYSTEM:
+  SEED_VALUE: 12222
+  FP16: True
+
+EXPERIMENT:
+  NAME: 'Two-Stage'
+
+IO:
+  PROJECT_PATH: './'
+  EXPERIMENT_PATH: '../runs/Experiments/'
+  SCORES_DICTIONARY_PATH: '../data/scores_dict.pkl'
+  LOG_PATH: "../runs/logging"
+  PP_NEG_TWEET_FILE_PATH: '../data/preprocessed/pp_train_neg_full.txt'
+  PP_POS_TWEET_FILE_PATH: '../data/preprocessed/pp_train_pos_full.txt'
+  PP_TEST_TWEET_FILE_PATH: '../data/preprocessed/pp_test_data.txt'
+  FT_TRAIN_DATA_FILE_PATH: '../data/train_data.txt'
+  FT_VAL_DATA_FILE_PATH: '../data/val_data.txt'
+  FT_TEST_DATA_FILE_PATH: '../data/test_data.txt'
+  TEST_PREDICTIONS_FILE_PATH: '../data/test_data_transformer.csv'
+  GLOVE_EMBEDDING_FILE_PATH: '../data/additional/glove.twitter.27B.200d.txt'
+  TRAIN_VAL_FOLDS_PATH: '../data/train_val_folds.pkl'
+
+PARAMETERS:
+  TRAIN_VAL_SPLIT_RATIO: 0.25
+  MODEL_NAME: "vinai/bertweet-base"
+  NUM_OF_LABELS: 2
+  BATCH_SIZE: 32
+  EPOCHS: 2
+  LR: 1e-4
+  WD: 0.005
+  TOK_MAX_LENGTH: 128
+  LOGGING_STEPS: 4000
+  WARMUP_STEPS: 500
+  SAVE_TOTAL_LIMIT: 2
+  EVAL_STRATEGY: 'epoch'
+  LOGGING_STRATEGY: 'epoch'
+  SAVE_STRATEGY: 'epoch'
+  GRAD_ACCUM_STEPS: 4
+  DISABLE_TQDM: False
+  LOAD_BEST_MODEL_AT_END: True

@@ -13,7 +13,7 @@ IO:
 
 PP:
   DROP_DUPLICATES: True
-  AMBIGUOUS_DROP_FACTOR: 0.8     # Only relevant if DROP_DUPLICATES = True
+  AMBIGUOUS_DROP_FACTOR: 0.80    # Only relevant if DROP_DUPLICATES = True
   DROP_NEAR_DUPLICATES: False
   USE_EKPHRASIS: True
   USE_WORD_LVL: True
@@ -34,7 +34,7 @@ EKPHRASIS:
                             #          - single: add a tag after the last capitalized word
                             #          - wrap: wrap all words with opening and closing tags
                             #          - every: add a tag after each word
-  SPELL_CORRECT_ELONGATED: False
+  SPELL_CORRECT_ELONGATED: True
   SPELL_CORRECTION: True
   FIX_TEXT: False
   FIX_HTML: False
@@ -44,24 +44,27 @@ EKPHRASIS:
   TOKENIZER: 'Whitespace'
 
 WORD_LVL:
-  LOWER_CASE: False
-  REMOVE_USER: True
-  CHANGE_USER: False
-  USER_REPRESENTATION: '@USER'
-  REMOVE_URL: True
-  CHANGE_URL: False
-  URL_REPRESENTATION: 'HTTPURL'
-  REMOVE_ELONGATED: True
-  REMOVE_STOPWORDS: True
-  REMOVE_PUNCTUATIONS: True
-  REMOVE_RETWEETS: True
-  NORMALIZE_LAUGHTER: True
-  REMOVE_SINGLE_CHARACTERS: True
-  REMOVE_ANGLE_BRACKETS: True
-  LEMMATIZE: True
-  NORMALIZE_REPEATING_CHARACTERS: False
-  REMOVE_NUMERIC: True
-  REMOVE_EXTRA_SPACES: True
-  REMOVE_TRAILING_URL: True
-  MANUAL_SPELL_CORRECTION: True
-  CLARIFY_EMPTY: True
+  LOWER_CASE: False #
+  REMOVE_USER: False #
+  CHANGE_USER: True #
+  USER_REPRESENTATION: '@USER' #
+  REMOVE_URL: False #
+  CHANGE_URL: True #
+  URL_REPRESENTATION: 'HTTPURL' #
+  REMOVE_ELONGATED: True       # True
+  REMOVE_STOPWORDS: False
+  REMOVE_PUNCTUATIONS: False
+  REMOVE_RETWEETS: False #      # True
+  NORMALIZE_LAUGHTER: False #      # True
+  REMOVE_SINGLE_CHARACTERS: False
+  REMOVE_ANGLE_BRACKETS: True       # True
+  LEMMATIZE: False
+  SPELL_CORRECTION: False
+  NORMALIZE_REPEATING_CHARACTERS: False       # True
+  REMOVE_NUMERIC: False
+  SEGMENT_HASHTAGS: False
+  RECONSTRUCT_SMILEYS: False
+  REMOVE_EXTRA_SPACES: False
+  REMOVE_TRAILING_URL: True #
+  MANUAL_SPELL_CORRECTION: False
+  CLARIFY_EMPTY: True #       # True

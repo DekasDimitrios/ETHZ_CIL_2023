@@ -1,0 +1,85 @@
+SYSTEM:
+  SEED_VALUE: 12222
+  FP16: True
+
+EXPERIMENT:
+  NAME: 'LSTM'
+
+IO:
+  PROJECT_PATH: './'
+  EXPERIMENT_PATH: '../runs/Experiments/'
+  SCORES_DICTIONARY_PATH: '../data/scores_dict.pkl'
+  LOG_PATH: "../runs/logging"
+  PP_NEG_TWEET_FILE_PATH: '../data/preprocessed/pp_train_neg_full.txt'
+  PP_POS_TWEET_FILE_PATH: '../data/preprocessed/pp_train_pos_full.txt'
+  PP_TEST_TWEET_FILE_PATH: '../data/preprocessed/pp_test_data.txt'
+  FT_TRAIN_DATA_FILE_PATH: '../data/train_data.txt'
+  FT_VAL_DATA_FILE_PATH: '../data/val_data.txt'
+  FT_TEST_DATA_FILE_PATH: '../data/test_data.txt'
+  TEST_PREDICTIONS_FILE_PATH: '../data/test_data_lstm.csv'
+  GLOVE_EMBEDDING_FILE_PATH: '../data/additional/glove.twitter.27B.200d.txt'
+
+TF_IDF:
+  TRAIN_VAL_SPLIT_RATIO: 0.25
+  MODEL: 'non-linear' # or 'non-linear'
+  CW: 'balanced'
+  PENALTY: 'l2'
+  NUM_OF_ESTIMATORS: 200
+  MAX_DEPTH: 11
+  VERBOSE: 4
+
+FASTTEXT:
+  TRAIN_VAL_SPLIT_RATIO: 0.25
+  LR: 0.01
+  DIMENSION: 150
+  EPOCH: 20
+
+GLOVE:
+  TRAIN_VAL_SPLIT_RATIO: 0.25
+  NUM_OF_ESTIMATORS: 850
+  SUBSAMPLE: 0.8
+  TREE_METHOD: 'gpu_hist'
+  OBJECTIVE: 'binary:logistic'
+  USE_LABEL_ENCODER: False
+
+W2V:
+  TRAIN_VAL_SPLIT_RATIO: 0.25
+  MIN_COUNT: 5
+  SAMPLE: 5e-5
+  WINDOW: 3
+  ALPHA: 0.035
+  MIN_ALPHA: 0.00075
+  NEGATIVE: 5
+  NUM_OF_WORKERS: 4
+  VECTOR_SIZE: 250
+  EPOCHS: 25
+  NUM_OF_ESTIMATORS: 1250
+  TREE_METHOD: 'gpu_hist'
+  OBJECTIVE: 'binary:logistic'
+
+LSTM:
+  TRAIN_VAL_SPLIT_RATIO: 0.25
+  EMBEDDING_DIMENSION: 500
+  MAXIMUM_FEATURES: 15000
+  MAXIMUM_LENGTH: 100
+  UNITS: 200
+  DROPOUT: 0.3
+  RECURRENT_DROPOUT: 0.25
+  SPATIAL_DROPOUT: 0.35
+  DENSE_LAYER_SIZE: 2
+  DENSE_LAYER_ACTIVATION: 'softmax'
+  MODEL_OPTIMIZER: 'adam'
+  MODEL_LOSS: 'categorical_crossentropy'
+  BATCH_SIZE: 128
+  EPOCHS: 25
+  STEPS_PER_EPOCH: 300
+  VERBOSE: 1
+
+BERTXGB:
+  TRAIN_VAL_SPLIT_RATIO: 0.25
+  DEVICE: 'cpu'
+  MAXIMUM_LENGTH: 128
+  NUM_OF_ESTIMATORS: 850
+  TREE_METHOD: 'gpu_hist'
+  OBJECTIVE: 'binary:logistic'
+  USE_LABEL_ENCODER: False

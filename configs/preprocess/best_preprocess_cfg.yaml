@@ -3,13 +3,13 @@ SYSTEM:
   USE_EXTRA_DATASET: False 
 
 IO:
-  NEG_TWEET_FILE_PATH: '../../data/train_neg_full.txt'
-  POS_TWEET_FILE_PATH: '../../data/train_pos_full.txt'
-  TEST_TWEET_FILE_PATH: '../../data/test_data.txt'
-  PP_NEG_TWEET_FILE_PATH: '../../data/preprocessed/train_neg_full.txt'
-  PP_POS_TWEET_FILE_PATH: '../../data/preprocessed/train_neg_full.txt'
-  PP_TEST_TWEET_FILE_PATH: '../../data/preprocessed/train_neg_full.txt'
-  EXTRA_DATA_FILE_PATH: '../../data/additional/training.1600000.processed.noemoticon.csv'
+  NEG_TWEET_FILE_PATH: '../data/train_neg_full.txt'
+  POS_TWEET_FILE_PATH: '../data/train_pos_full.txt'
+  TEST_TWEET_FILE_PATH: '../data/test_data.txt'
+  PP_NEG_TWEET_FILE_PATH: '../data/preprocessed/pp_train_neg_full.txt'
+  PP_POS_TWEET_FILE_PATH: '../data/preprocessed/pp_train_pos_full.txt'
+  PP_TEST_TWEET_FILE_PATH: '../data/preprocessed/pp_test_data.txt'
+  EXTRA_DATA_FILE_PATH: '../data/additional/training.1600000.processed.noemoticon.csv'
 
 PP:
   DROP_DUPLICATES: True
