@@ -9,10 +9,9 @@ import preprocess
 import models
 
 if __name__ == '__main__':
-
     # Preprocess the dataset
-    # preprocess.run('../configs/preprocess/best_preprocess_cfg.yaml')
+    preprocess.run('../configs/preprocess/best_preprocess_cfg.yaml')
 
     # Train the desired model
-    models.run('../configs/training/baseline_cfg.yaml')
-
+    # models.run('../configs/training/baseline_cfg.yaml', flag='Baseline')
+    models.run('../configs/training/novelty_cfg.yaml', flag='Novelty')

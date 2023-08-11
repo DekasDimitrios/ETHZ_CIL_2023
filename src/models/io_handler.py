@@ -5,8 +5,10 @@
     Python Version: 3.9
 '''
 
-
+import os
+import pickle
 import pandas as pd
+import numpy as np
 from tqdm import tqdm
 from sklearn.utils import shuffle
 
@@ -58,7 +60,7 @@ def load_training_tweets_to_df(pos_path, neg_path, seed):
     train_pos_tweets = load_training_tweets_from_text_file(pos_path)
     train_pos_labels = [1] * len(train_pos_tweets)
     train_neg_tweets = load_training_tweets_from_text_file(neg_path)
-    train_neg_labels = [-1] * len(train_neg_tweets)
+    train_neg_labels = [0] * len(train_neg_tweets)
 
     # Unify the two types of training tweets
     train_tweets = train_pos_tweets + train_neg_tweets
@@ -128,4 +130,58 @@ def write_eval_ft_tweets_to_text_file(tweets, path):
             f.write('{}\n'.format(row['tweet']))
 
 
+def save_test_preds(preds, path):
+    """
+    Given a list of predictions and a valid system path the function can be used to store
+    the predictions in a csv file format inside the file specified by the system path.
 
+    :param preds: a list containing the predictions to be saved
+    :param path: a system path that indicated the file in which the csv file will be saved
+    """
+    if 0 in preds:
+        test_preds = [-1 if p == 0 else 1 for p in preds]
+    else:
+        test_preds = preds
+    df = pd.DataFrame(test_preds, columns=["Prediction"])
+    df.index.name = "Id"
+    df.index += 1
+    df.to_csv(path)
+
+
+def save_logits(logits, path, model_name, text_name):
+    """
+    Given a list of logits, a valid system path, a model name, and a text name, the function can
+    be used to store the logits in a text file format inside the file specified by the system path.
+
+    :param logits: a list containing the logits to be saved
+    :param path: a system path that indicated the file in which the csv file will be saved
+    :param model_name: a string representing the name of the model used to produce the logits
+    :param text_name: a string representing the name used to specify the experiment that produced the logits
+    """
+    os.makedirs(path + model_name + "-" + text_name, exist_ok=True)
+    np.savetxt(path + text_name, logits, delimiter=",", header="negative,positive", comments="")
+
+
+def load_from_pkl(path):
+    """
+    Given valid system path the function can be used to load the
+    pickled data inside the file specified by the system path.
+
+    :param path: a system path that indicated the file in which the data will be loaded from
+    :return: the loaded data
+    """
+    with open(path, 'rb') as file:
+        data = pickle.load(file)
+    return data
+
+
+def save_to_pkl(data, path):
+    """
+    Given any type of data and a valid system path the function can be used to store
+    the data in a pickle file format inside the file specified by the system path.
+
+    :param data: the data to be saved
+    :param path: a system path that indicated the file in which the data will be saved
+    """
+    with open(path, 'wb') as file:
+        pickle.dump(data, file)

@@ -9,7 +9,7 @@
 import pandas as pd
 from tqdm import tqdm
 from sklearn.utils import shuffle
-from ekp import apply_ekphrasis_extra
+from src.preprocess.ekp import apply_ekphrasis_extra
 
 
 def load_training_tweets_from_text_file(path):
@@ -98,7 +98,7 @@ def write_tweets_to_text_file(tweets, path):
     :param tweets: a list containing the tweets to be saved
     :param path: a system path that indicated the file in which the text file will be saved
     """
-    with open(path, 'w') as file:
+    with open(path, 'w', encoding='utf-8') as file:
         for tweet in tweets:
             file.write(f"{tweet}\n")
 

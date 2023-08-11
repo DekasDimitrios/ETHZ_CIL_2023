@@ -18,13 +18,13 @@ _C.SYSTEM.USE_EXTRA_DATASET = False
 
 # Create Input/Output Variables config
 _C.IO = CN()
-_C.IO.NEG_TWEET_FILE_PATH = '../../data/train_neg_full.txt'
-_C.IO.POS_TWEET_FILE_PATH = '../../data/train_pos_full.txt'
-_C.IO.TEST_TWEET_FILE_PATH = '../../data/test_data.txt'
-_C.IO.PP_NEG_TWEET_FILE_PATH = '../../data/preprocessed/train_neg_full.txt'
-_C.IO.PP_POS_TWEET_FILE_PATH = '../../data/preprocessed/train_pos_full.txt'
-_C.IO.PP_TEST_TWEET_FILE_PATH = '../../data/preprocessed/test_data.txt'
-_C.IO.EXTRA_DATA_FILE_PATH = '../../data/additional/training.1600000.processed.noemoticon.csv'
+_C.IO.NEG_TWEET_FILE_PATH = '..data/train_neg_full.txt'
+_C.IO.POS_TWEET_FILE_PATH = '../data/train_pos_full.txt'
+_C.IO.TEST_TWEET_FILE_PATH = '../data/test_data.txt'
+_C.IO.PP_NEG_TWEET_FILE_PATH = '../data/preprocessed/pp_train_neg_full.txt'
+_C.IO.PP_POS_TWEET_FILE_PATH = '../data/preprocessed/pp_train_pos_full.txt'
+_C.IO.PP_TEST_TWEET_FILE_PATH = '../data/preprocessed/pp_test_data.txt'
+_C.IO.EXTRA_DATA_FILE_PATH = '../data/additional/training.1600000.processed.noemoticon.csv'
 
 # Create Preprocessing Steps Variables config
 _C.PP = CN()

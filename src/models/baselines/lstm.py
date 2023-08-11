@@ -1,6 +1,7 @@
 '''
     File name: lstm.py
-    Author: Dekas Dimitrios
+    Author: Tsolakis Giorgos
+    Code Cleaning & Integration: Dekas Dimitrios
     Date last modified: 07/08/2023
     Python Version: 3.9
 '''
@@ -14,14 +15,21 @@ from keras.models import Sequential
 from keras.layers import Dense, Embedding, LSTM, SpatialDropout1D
 from sklearn.model_selection import train_test_split
 
-
+from src.models.utils import save_test_preds
 from src.models.io_handler import load_testing_tweets_to_df, load_training_tweets_to_df
 
 
 def train_lstm(cfg):
+    """
+    A function that given a config is able to train an LSTM-based Neural Network
+    and produce the respective results and logs.
+
+    :param cfg: a yacs CfgNode object with the appropriate parameters to be used
+    """
+
     tf.random.set_seed(cfg.SYSTEM.SEED_VALUE)
-    train_df = load_training_tweets_to_df(cfg.IO.PREPROCESSED_POS_DATA_PATH,
-                                          cfg.IO.PREPROCESSED_NEG_DATA_PATH,
+    train_df = load_training_tweets_to_df(cfg.IO.PP_POS_TWEET_FILE_PATH,
+                                          cfg.IO.PP_NEG_TWEET_FILE_PATH,
                                           seed=10)
 
     X = list(train_df["tweet"])
@@ -56,18 +64,16 @@ def train_lstm(cfg):
 
     # Create Validation set
     Y = pd.get_dummies(X_train_set['label']).values
-    X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size=cfg.LSTM.TEST_VAL_SPLIT_RATIO, random_state=cfg.SYSTEM.SEED_VALUE)
+    X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size=cfg.LSTM.TRAIN_VAL_SPLIT_RATIO, random_state=cfg.SYSTEM.SEED_VALUE)
 
     # Train Model
     history = model.fit(X_train, Y_train, validation_data=[X_val, Y_val], epochs=cfg.LSTM.EPOCHS,
                         steps_per_epoch=cfg.LSTM.STEPS_PER_EPOCH, batch_size=cfg.LSTM.BATCH_SIZE, verbose=cfg.LSTM.VERBOSE)
 
-    X_test_set = load_testing_tweets_to_df(cfg.IO.PREPROCESSED_TEST_DATA_PATH)
+    X_test_set = load_testing_tweets_to_df(cfg.IO.PP_TEST_TWEET_FILE_PATH)
     X_test = tokenizer.texts_to_sequences(X_test_set['tweet'].values)
     X_test = pad_sequences(X_test, maxlen=cfg.LSTM.MAXIMUM_LENGTH)
     y_test = model.predict(X_test, batch_size=len(X_test))
-    y_preds = [-1 if np.argmax(val) == 0 else 1 for val in y_test]
-    df = pd.DataFrame(y_preds, columns=["Prediction"])
-    df.index.name = "Id"
-    df.index += 1
-    df.to_csv(cfg.IO.TEST_PREDICTIONS_FILE_PATH)
+    y_preds = [np.argmax(val) for val in y_test]
+
+    save_test_preds(y_preds, cfg.IO.TEST_PREDICTIONS_FILE_PATH)

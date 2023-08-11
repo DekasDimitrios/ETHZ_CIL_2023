@@ -1,9 +1,11 @@
 '''
     File name: glove.py
-    Author: Dekas Dimitrios
-    Date last modified: 07/15/2023
+    Author: Tsolakis Giorgos
+    Code Cleaning & Integration: Dekas Dimitrios
+    Date last modified: 07/08/2023
     Python Version: 3.9
 '''
+
 
 from xgboost import XGBClassifier
 import numpy as np
@@ -16,11 +18,25 @@ from src.models.utils import eval_test_model
 
 
 def tokenize(df):
+    """
+    A function that given a pandas dataframe transforms its 'tweet' columns to
+    contain the tokenized version of its strings using the WhitespaceTokenizer.
+
+    :param df: a pandas dataframe to undergo the transformation
+    """
     tokenizer = WhitespaceTokenizer()
     df['tweet'] = df['tweet'].apply(lambda tweet: tokenizer.tokenize(tweet))
 
 
 def tweet_embedding(tokens, embeddings):
+    """
+    A function that is able to produce vector embeddings of dimension 200
+    for a list of tokens using a provided list of embeddings.
+
+    :param tokens: a list containing the tokens that are going to be transformed to an embedding vector
+    :param embeddings: an object representing the model used to generate the embedding
+    :return: the produced embedding representation
+    """
     embedding = np.zeros(200)
     count = 0
     for token in tokens:
@@ -31,21 +47,28 @@ def tweet_embedding(tokens, embeddings):
 
 
 def train_glove(cfg):
-    train_df = load_training_tweets_to_df(cfg.IO.PREPROCESSED_POS_DATA_PATH,
-                                          cfg.IO.PREPROCESSED_NEG_DATA_PATH,
+    """
+    A function that given a config is able to train an XGBClassifier using glove embeddings
+    and produce the respective results and logs.
+
+    :param cfg: a yacs CfgNode object with the appropriate parameters to be used
+    """
+
+    train_df = load_training_tweets_to_df(cfg.IO.PP_POS_TWEET_FILE_PATH,
+                                          cfg.IO.PP_NEG_TWEET_FILE_PATH,
                                           seed=10)
 
     X = list(train_df["tweet"])
     y = list(train_df["label"])
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=cfg.GLOVE.TEST_VAL_SPLIT_RATIO,
+    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=cfg.GLOVE.TRAIN_VAL_SPLIT_RATIO,
                                                       stratify=y, random_state=cfg.SYSTEM.SEED_VALUE)
 
-    X_test_set = load_testing_tweets_to_df(cfg.IO.PREPROCESSED_TEST_DATA_PATH)
+    X_test_set = load_testing_tweets_to_df(cfg.IO.PP_TEST_TWEET_FILE_PATH)
     X_train_set = pd.DataFrame({'tweet': X_train, 'label': y_train})
     X_val_set = pd.DataFrame({'tweet': X_val, 'label': y_val})
 
     embeddings = {}
-    with open(cfg.IO.GLOVE_EMBEDDING_FILE_PATH, "r") as glove:
+    with open(cfg.IO.GLOVE_EMBEDDING_FILE_PATH, "r", encoding='utf-8') as glove:
         for line in glove:
             line = line.split()
             word = line[0]
@@ -66,7 +89,6 @@ def train_glove(cfg):
                           objective=cfg.GLOVE.OBJECTIVE,
                           use_label_encoder=cfg.GLOVE.USE_LABEL_ENCODER,
                           seed=cfg.SYSTEM.SEED_VALUE)
-    y_train = [0 if y == -1 else y for y in y_train]
     model.fit(x_train, y_train)
 
     val_preds = model.predict(x_val)

@@ -23,12 +23,13 @@ _C.EXPERIMENT.NAME = 'TF-IDF'
 # Create Input/Output Variables config
 _C.IO = CN()
 _C.IO.PROJECT_PATH = './'
-_C.IO.EXPERIMENT_PATH = './Experiments/'
-_C.IO.DICTIONARY_PATH = './scores_dict.pkl'
-_C.IO.LOG_PATH = './logging'
-_C.IO.PREPROCESSED_POS_DATA_PATH = '../processed_pos_tweets_non_transformer.txt'
-_C.IO.PREPROCESSED_NEG_DATA_PATH = '../processed_neg_tweets_non_transformer.txt'
-_C.IO.PREPROCESSED_TEST_DATA_PATH = '../processed_test_tweets_non_transformer.txt'
+_C.IO.EXPERIMENT_PATH = '../runs/Experiments/'
+_C.IO.SCORES_DICTIONARY_PATH = '../data/scores_dict.pkl'
+_C.IO.TRAIN_VAL_FOLDS_PATH = '../data/train_val_folds.pkl'
+_C.IO.LOG_PATH = '../runs/logging'
+_C.IO.PP_NEG_TWEET_FILE_PATH = '../data/preprocessed/pp_train_neg_full.txt'
+_C.IO.PP_POS_TWEET_FILE_PATH = '../data/preprocessed/pp_train_pos_full.txt'
+_C.IO.PP_TEST_TWEET_FILE_PATH = '../data/preprocessed/pp_test_data.txt'
 _C.IO.FT_TRAIN_DATA_FILE_PATH = './train_data.txt'
 _C.IO.FT_VAL_DATA_FILE_PATH = './val_data.txt'
 _C.IO.FT_TEST_DATA_FILE_PATH = './test_data.txt'
@@ -37,7 +38,7 @@ _C.IO.GLOVE_EMBEDDING_FILE_PATH = './glove.twitter.27B.200d.txt'
 
 # Create TF-IDF Model Hyperparameters config
 _C.TF_IDF = CN()
-_C.TF_IDF.TEST_VAL_SPLIT_RATIO = 0.05
+_C.TF_IDF.TRAIN_VAL_SPLIT_RATIO = 0.25
 _C.TF_IDF.MODEL = 'linear'
 _C.TF_IDF.CW = 'balanced'
 _C.TF_IDF.PENALTY = 'l2'
@@ -47,14 +48,14 @@ _C.TF_IDF.VERBOSE = 0
 
 # Create FastText Model Hyperparameters config
 _C.FASTTEXT = CN()
-_C.FASTTEXT.TEST_VAL_SPLIT_RATIO = 0.05
+_C.FASTTEXT.TRAIN_VAL_SPLIT_RATIO = 0.25
 _C.FASTTEXT.LR = 0.01
 _C.FASTTEXT.DIMENSION = 150
 _C.FASTTEXT.EPOCH = 20
 
 # Create GloVe Model Hyperparameters config
 _C.GLOVE = CN()
-_C.GLOVE.TEST_VAL_SPLIT_RATIO = 0.05
+_C.GLOVE.TRAIN_VAL_SPLIT_RATIO = 0.25
 _C.GLOVE.NUM_OF_ESTIMATORS = 850
 _C.GLOVE.SUBSAMPLE = 0.8
 _C.GLOVE.TREE_METHOD = 'gpu_hist'
@@ -63,7 +64,7 @@ _C.GLOVE.USE_LABEL_ENCODER = False
 
 # Create Word2Vec Model Hyperparameters config
 _C.W2V = CN()
-_C.W2V.TEST_VAL_SPLIT_RATIO = 0.05
+_C.W2V.TRAIN_VAL_SPLIT_RATIO = 0.25
 _C.W2V.MIN_COUNT = 5
 _C.W2V.SAMPLE = 5e-5
 _C.W2V.WINDOW = 3
@@ -79,7 +80,7 @@ _C.W2V.OBJECTIVE = 'binary:logistic'
 
 # Create LSTM Model Hyperparameters config
 _C.LSTM = CN()
-_C.LSTM.TEST_VAL_SPLIT_RATIO = 0.05
+_C.LSTM.TRAIN_VAL_SPLIT_RATIO = 0.25
 _C.LSTM.EMBEDDING_DIMENSION = 500
 _C.LSTM.MAXIMUM_FEATURES = 15000
 _C.LSTM.MAXIMUM_LENGTH = 100
@@ -98,7 +99,7 @@ _C.LSTM.VERBOSE = 1
 
 # Create Bert-XGB Model Hyperparameters config
 _C.BERTXGB = CN()
-_C.BERTXGB.TEST_VAL_SPLIT_RATIO = 0.05
+_C.BERTXGB.TRAIN_VAL_SPLIT_RATIO = 0.25
 _C.BERTXGB.DEVICE = 'cpu'
 _C.BERTXGB.MAXIMUM_LENGTH = 128
 _C.BERTXGB.NUM_OF_ESTIMATORS = 850
@@ -107,13 +108,24 @@ _C.BERTXGB.OBJECTIVE = 'binary:logistic'
 _C.BERTXGB.USE_LABEL_ENCODER = False
 
 # Create Novelty Hyperparameters config
-_C.NHP = CN()
-_C.NHP.MODEL_NAME = "bert-base-uncased"
-_C.NHP.BATCH_SIZE = 32
-_C.NHP.EPOCHS = 3
-_C.NHP.LR = 1e-4
-_C.NHP.WD = 0.005
-_C.NHP.TOK_MAX_LENGTH = 128
+_C.PARAMETERS = CN()
+_C.PARAMETERS.TRAIN_VAL_SPLIT_RATIO = 0.25
+_C.PARAMETERS.MODEL_NAME = "vinai/bertweet-base"
+_C.PARAMETERS.NUM_OF_LABELS = 2
+_C.PARAMETERS.BATCH_SIZE = 32
+_C.PARAMETERS.EPOCHS = 2
+_C.PARAMETERS.LR = 1e-4
+_C.PARAMETERS.WD = 0.005
+_C.PARAMETERS.TOK_MAX_LENGTH = 128
+_C.PARAMETERS.LOGGING_STEPS = 4000
+_C.PARAMETERS.WARMUP_STEPS = 500
+_C.PARAMETERS.SAVE_TOTAL_LIMIT = 2
+_C.PARAMETERS.EVAL_STRATEGY = 'epoch'
+_C.PARAMETERS.LOGGING_STRATEGY = 'epoch'
+_C.PARAMETERS.SAVE_STRATEGY = 'epoch'
+_C.PARAMETERS.GRAD_ACCUM_STEPS = 4
+_C.PARAMETERS.DISABLE_TQDM = False
+_C.PARAMETERS.LOAD_BEST_MODEL_AT_END = True
 
 
 def get_cfg_defaults():

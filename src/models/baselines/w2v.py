@@ -1,9 +1,11 @@
 '''
     File name: w2v.py
-    Author: Dekas Dimitrios
+    Author: Tsolakis Giorgos
+    Code Cleaning & Integration: Dekas Dimitrios
     Date last modified: 07/08/2023
     Python Version: 3.9
 '''
+
 
 import numpy as np
 import pandas as pd
@@ -17,14 +19,29 @@ from src.models.utils import eval_test_model
 
 
 def tokenize(df):
+    """
+    A function that given a pandas dataframe transforms its 'tweet' columns to
+    contain the tokenized version of its strings using the WhitespaceTokenizer.
+
+    :param df: a pandas dataframe to undergo the transformation
+    """
     tokenizer = WhitespaceTokenizer()
     df['tweet'] = df['tweet'].apply(lambda tweet: tokenizer.tokenize(tweet))
 
 
-def tweet_embeddings(tweet, model, size):
+def tweet_embeddings(tokens, model, size):
+    """
+    A function that is able to produce vector embeddings for a given tweet
+    using a provided model and a desired dimension for the embedding.
+
+    :param tokens: a list containing the tokens of a tweet that is going to be transformed to an embedding vector
+    :param model: an object representing the model used to generate the embedding
+    :param size: an integer specifying the dimension of an embedding
+    :return: the produced embedding representation
+    """
     vec = np.zeros(size).reshape((1, size))
     count = 0
-    for word in tweet:
+    for word in tokens:
         # print(word)
         try:
             vec += model.wv[word].reshape((1, size))
@@ -39,16 +56,22 @@ def tweet_embeddings(tweet, model, size):
 
 
 def train_w2v(cfg):
-    train_df = load_training_tweets_to_df(cfg.IO.PREPROCESSED_POS_DATA_PATH,
-                                          cfg.IO.PREPROCESSED_NEG_DATA_PATH,
+    """
+    A function that given a config is able to train an XGBClassifier using Word2Vec embeddings
+    and produce the respective results and logs.
+
+    :param cfg: a yacs CfgNode object with the appropriate parameters to be used
+    """
+    train_df = load_training_tweets_to_df(cfg.IO.PP_POS_TWEET_FILE_PATH,
+                                          cfg.IO.PP_NEG_TWEET_FILE_PATH,
                                           seed=10)
 
     X = list(train_df["tweet"])
     y = list(train_df["label"])
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=cfg.W2V.TEST_VAL_SPLIT_RATIO,
+    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=cfg.W2V.TRAIN_VAL_SPLIT_RATIO,
                                                       stratify=y, random_state=cfg.SYSTEM.SEED_VALUE)
 
-    X_test_set = load_testing_tweets_to_df(cfg.IO.PREPROCESSED_TEST_DATA_PATH)
+    X_test_set = load_testing_tweets_to_df(cfg.IO.PP_TEST_TWEET_FILE_PATH)
     X_train_set = pd.DataFrame({'tweet': X_train, 'label': y_train})
     X_val_set = pd.DataFrame({'tweet': X_val, 'label': y_val})
 

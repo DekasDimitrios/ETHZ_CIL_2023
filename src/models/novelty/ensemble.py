@@ -1,9 +1,24 @@
+'''
+    File name: ensemble.py
+    Author: Andreas Psaroudakis / Kostas Fanaras
+    Code Cleaning & Integration: Dekas Dimitrios
+    Date last modified: 07/15/2023
+    Python Version: 3.9
+'''
+
+
 import numpy as np
 import pandas as pd
 from collections import Counter
 
 
 def soft_voting(file_paths):
+    """
+    A function that is able to combine multiple files containing logits of a model
+    in order to produce a final soft voting result acting as an ensemble and save it.
+
+    :param file_paths: a list containing valid systems paths that represent text files used to store the logits of a model
+    """
     # Initialize empty lists to store positive and negative logits
     positive_logits = []
     negative_logits = []
@@ -39,6 +54,12 @@ def soft_voting(file_paths):
 
 
 def hard_voting(file_paths):
+    """
+    A function that is able to combine multiple files containing logits of a model
+    in order to produce a final hard voting result acting as an ensemble and save it.
+
+    :param file_paths: a list containing valid systems paths that represent text files used to store the logits of a model    :return:
+    """
     # Read and combine predictions from each file
     predictions = []
     for file in file_paths:
@@ -59,3 +80,19 @@ def hard_voting(file_paths):
 
     # Save the majority voted predictions to a CSV file
     df_majority_voted.to_csv("majority_voting_predictions.csv")
+
+
+def apply_ensemble(type, file_paths):
+    """
+    A function that is able to produce and store the predictions of an ensemble.
+
+    :param type: a string representing the type of ensemble method to be used
+    :param file_paths: a list containing strings representing valid system paths of model logits used to produce the ensemble
+    """
+    if type == 'soft':
+        soft_voting(file_paths)
+    elif type == 'hard':
+        hard_voting(file_paths)
+    else:
+        print("Ensemble option provided is not available. Soft voting will be performed")
+        soft_voting(file_paths)
